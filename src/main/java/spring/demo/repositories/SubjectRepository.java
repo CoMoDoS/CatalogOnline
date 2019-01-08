@@ -8,4 +8,5 @@ import spring.demo.entities.Subject;
 public interface SubjectRepository extends JpaRepository<Subject, Integer>{
 
     Subject findById(int id);
+
 }

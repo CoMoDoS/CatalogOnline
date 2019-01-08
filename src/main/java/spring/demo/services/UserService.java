@@ -1,7 +1,6 @@
 package spring.demo.services;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,9 +8,9 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import spring.demo.errorhandler.EntityValidationException;
+import spring.demo.dto.StudentSituation;
+import spring.demo.dto.TeacherSituation;
 import spring.demo.errorhandler.ResourceNotFoundException;
-import spring.demo.dto.UserDTO;
 import spring.demo.entities.User;
 import spring.demo.repositories.UserRepository;
 
@@ -23,6 +22,60 @@ public class UserService {
 
 	@Autowired
 	private UserRepository usrRepository;
+
+	private User findUserByEmail(String email){
+		User user = usrRepository.findByEmail(email);
+		System.out.println(user.toString());
+		if (user == null) {
+			throw new ResourceNotFoundException(User.class.getSimpleName());
+		}
+
+		return user;
+	}
+
+	public List<TeacherSituation> getTeacherSituation(int id){
+	    List<TeacherSituation> situation = new ArrayList<>();
+        try{
+            situation = usrRepository.getTSituation(id);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return situation;
+    }
+
+	public List<StudentSituation> getStudentSituation(int id){
+		List<StudentSituation> situation = new ArrayList<>();
+		try{
+			situation = usrRepository.getSituation(id);
+		}catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return situation;
+	}
+
+	public String login(String email, String pass){
+		User user = new User();
+		try {
+			user = findUserByEmail(email);
+		}catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		if (user.getEmail() != null ) {
+			if (user.getPassword().compareTo(pass) == 0) {
+				if (user.getAdmin() == 1)
+					return "ok-" + "a-" + user.getId_user().toString();
+				if (user.getTeacher() == 1)
+					return "ok-" + "t-" + user.getId_user().toString();
+				if (user.getStudent() == 1)
+					return "ok-" + "s-" + user.getId_user().toString();
+			} else return "ok-bad";
+		}else return "bad-bad";
+
+		return null;
+	}
 
 	public User findUserById(int userId) {
 		User usr = usrRepository.findById(userId);

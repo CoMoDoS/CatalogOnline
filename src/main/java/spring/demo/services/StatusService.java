@@ -51,4 +51,17 @@ public class StatusService {
         return status1;
     }
 
+    public Status updateMark(int mark, int id) {
+        Status status = new Status();
+        try {
+            status = statusRepository.findByIdTeacher(id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if ( status.getId_status() != null) {
+            status.setMark(mark);
+            statusRepository.save(status);
+        }
+        return status;
+    }
 }
