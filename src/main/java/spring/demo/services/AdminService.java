@@ -1,5 +1,7 @@
 package spring.demo.services;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -64,4 +66,21 @@ public class AdminService {
     }
 
 
+    public int sendMail(Students user) {
+        final MailService mailService = new MailService("comodos.n346@gmail.com","ParolaGoogle123");
+        Object object = user.toString();
+
+        mailService.sendMail("ilie.neag96@gmail.com","Dummy Mail Title",  object.toString());
+        return 1;
+    }
+
+    public List<String> getSituation() throws FileNotFoundException, UnsupportedEncodingException {
+        List<String> list = adminRepository.getSituation();
+//        for(String a : list){
+//            WriteFileService.writeFile(a);
+//        }
+
+
+        return list;
+    }
 }

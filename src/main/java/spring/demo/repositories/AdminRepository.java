@@ -19,4 +19,7 @@ public interface AdminRepository extends JpaRepository<User, Integer>  {
 
     @Query(value = "select * from users;", nativeQuery = true)
     List<Users> getUsers();
+
+    @Query(value = "select distinct(s.mark), (select count(mark) from status where mark = s.mark) from status s;", nativeQuery = true)
+    List<String> getSituation();
 }

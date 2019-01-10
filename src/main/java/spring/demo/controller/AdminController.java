@@ -1,5 +1,7 @@
 package spring.demo.controller;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.demo.dto.Lesons;
 import spring.demo.dto.Students;
 import spring.demo.dto.Users;
+import spring.demo.entities.User;
 import spring.demo.services.AdminService;
 
 
@@ -36,5 +39,15 @@ public class AdminController {
         return adminService.getUsers();
     }
 
+    @CrossOrigin(origins = "http://localhost")
+    @RequestMapping(value = "/sendMail", method = RequestMethod.POST)
+    public int insertUser(@RequestBody Students user) {
+        return adminService.sendMail(user);
+    }
 
+    @CrossOrigin(origins = "http://localhost")
+    @RequestMapping(value = "/situation", method = RequestMethod.GET)
+    public List<String> getSituation() throws FileNotFoundException, UnsupportedEncodingException {
+        return adminService.getSituation();
+    }
 }
